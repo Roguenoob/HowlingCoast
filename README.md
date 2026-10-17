@@ -2,8 +2,8 @@
 
 | Website                   | Link                                           |
 |---------------------------|------------------------------------------------|
-| Discord | [https://discord.gg/qpf3BtBUXq](https://discord.gg/qpf3BtBUXq)
-| Code    | [https://github.com/Ochre-Valley/Ochre-Valley](https://github.com/Ochre-Valley/Ochre-Valley)    |
+| Discord | [ ]( )
+| Code    | [https://github.com/Roguenoob/HowlingCoast](https://github.com/Roguenoob/HowlingCoast)    |
 | Wiki    | [https://ochrevalley.miraheze.org/wiki/Main_Page](https://ochrevalley.miraheze.org/wiki/Main_Page) |
 
 ## LICENSE
