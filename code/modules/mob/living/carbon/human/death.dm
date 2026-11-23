@@ -13,7 +13,7 @@
 /mob/living/carbon/human/spawn_dust(just_ash = FALSE)
 	if(just_ash)
 		for(var/i in 1 to 5)
-			new /obj/item/ash(loc)
+			new /obj/item/natural/ash(loc)
 	else
 		new /obj/effect/decal/remains/human(loc)
 
@@ -32,6 +32,9 @@
 		return
 	if(QDELETED(src) || !loc)
 		return
+
+	if(HAS_TRAIT(src, TRAIT_POSSESSED)) // if a vessel the hag is possessing dies, she just gets shunted out of it. she can revive people anyways
+		release_vessel(TRUE)
 
 	if(SScity_assembly?.is_alderman(src))
 		var/departing_name = real_name
@@ -214,7 +217,7 @@
 		if("Bishop")
 			removeomen(OMEN_NOPRIEST)
 
-/mob/living/carbon/human/gib(no_brain, no_organs, no_bodyparts, safe_gib = FALSE)
+/mob/living/carbon/human/gib(no_brain, no_organs, no_bodyparts, safe_gib = FALSE, leave_gibs = TRUE)
 	record_round_statistic(STATS_PEOPLE_GIBBED)
 	for(var/mob/living/carbon/human/CA in viewers(7, src))
 		if(CA != src && !HAS_TRAIT(CA, TRAIT_BLIND))

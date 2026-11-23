@@ -3,6 +3,7 @@
 	tutorial = "You are a warrior feared for your brutality, dedicated to using your might for your own gain. Might equals right, and you are the reminder of such a saying."
 	allowed_sexes = list(MALE, FEMALE)
 
+	min_pq = 15 //OV EDIT
 	outfit = /datum/outfit/job/roguetown/wretch/berserker
 	cmode_music = 'sound/music/cmode/antag/combat_darkstar.ogg'
 	class_select_category = CLASS_CAT_WARRIOR
@@ -38,9 +39,6 @@
 		"Stashed Funds" = /obj/item/roguecoin/silver/pile/wretchpile,
 	)
 
-/datum/outfit/job/roguetown/wretch/berserker
-	var/subclass_selected
-
 /datum/outfit/job/roguetown/wretch/berserker/pre_equip(mob/living/carbon/human/H)
 	cloak = /obj/item/clothing/cloak/raincloak/furcloak/brown
 	gloves = /obj/item/clothing/gloves/roguetown/plate
@@ -61,7 +59,7 @@
 	H.dna.species.soundpack_m = GLOB.voice_packs[/datum/voicepack/male/warrior]
 	if(H.mind)
 		H.set_blindness(0)
-		H.mind.AddSpell(new /obj/effect/proc_holder/spell/self/rage)
+		H.mind.AddSpell(new /datum/action/cooldown/spell/rage)
 		var/list/armor_choices = list("Light Armor", "Bare Skin")
 		var/armor_choice = input(H,"Choose your DEFENSE.", "I CAN TAKE IT!!") as anything in armor_choices
 		switch(armor_choice)

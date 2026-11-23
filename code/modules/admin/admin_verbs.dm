@@ -78,6 +78,8 @@ GLOBAL_PROTECT(admin_verbs_admin)
 	/client/proc/game_panel,			/*game panel, allows to change game-mode etc*/
 	/datum/admins/proc/toggleooc,		/*toggles ooc on/off for everyone*/
 	/datum/admins/proc/toggleoocdead,	/*toggles ooc on/off for everyone who is dead*/
+	/datum/admins/proc/toggleantagooc,	/*toggles the antagooc channel on/off*/
+	/datum/admins/proc/toggleantagoocwretches,	/*toggles whether wretches can use antagooc*/
 	/datum/admins/proc/toggleenter,		/*toggles whether people can join the current game*/
 	/datum/admins/proc/toggleguests,	/*toggles whether guests can join the current game*/
 	/datum/admins/proc/announce,		/*priority announce something to all clients.*/
@@ -91,7 +93,7 @@ GLOBAL_PROTECT(admin_verbs_admin)
 	/client/proc/hearallasghost,
 	/client/proc/toggle_view_range,		/*changes how far we can see*/
 	/client/proc/getserverlogs,		/*for accessing server logs*/
-	/client/proc/getcurrentlogs,		/*for accessing server logs for the current round*/
+	/client/proc/getcurrentlogs,		/*for accessing server logs for the current round*/ //OV ADD
 	/client/proc/cmd_admin_subtle_message,	/*send an message to somebody as a 'voice in their head'*/
 	/client/proc/cmd_admin_delete,		/*delete an instance/object/mob/etc*/
 	/client/proc/cmd_admin_check_contents,	/*displays the contents of an instance*/
@@ -124,11 +126,11 @@ GLOBAL_PROTECT(admin_verbs_admin)
 	/datum/admins/proc/wake_view,
 	/datum/admins/proc/extend_round,
 	/client/proc/cmd_admin_set_ic_date, /* Set custom IC date for events */
-	/client/proc/log_viewer_new,
+	/client/proc/cmd_view_letter_log,		/*view all HERMES letter and package records this round*/
+	/client/proc/log_viewer_new, //OV ADD
 	/client/proc/reenable_pq, //OV ADD
-	/client/proc/log_viewer_new, // OV Add: JSON Logging
-	/client/proc/item_gm_quest, //OV ADD
 	/client/proc/spawn_player, //OV ADD
+	/client/proc/item_gm_quest, //OV ADD
 	)
 GLOBAL_LIST_INIT(admin_verbs_ban, list(
 	/client/proc/unban_panel,
@@ -136,7 +138,7 @@ GLOBAL_LIST_INIT(admin_verbs_ban, list(
 	/client/proc/stickybanpanel,
 	/client/proc/check_pq,
 	/client/proc/adjust_pq,
-	/client/proc/getcurrentlogs,
+	/client/proc/getcurrentlogs, //OV EDIT
 	/client/proc/getserverlogs
 	))
 GLOBAL_PROTECT(admin_verbs_ban)
@@ -172,8 +174,6 @@ GLOBAL_LIST_INIT(admin_verbs_fun, list(
 	/client/proc/show_tip,
 	/client/proc/smite,
 	/client/proc/player_effects, //OV ADD
-	/client/proc/generate_quest_kill, //OV ADD
-	/client/proc/generate_quest_recover, //OV ADD
 	))
 GLOBAL_PROTECT(admin_verbs_fun)
 GLOBAL_LIST_INIT(admin_verbs_spawn, list(/datum/admins/proc/spawn_atom, /datum/admins/proc/podspawn_atom, /client/proc/respawn_character, /datum/admins/proc/beaker_panel))
@@ -248,6 +248,8 @@ GLOBAL_PROTECT(admin_verbs_debug)
 	/client/proc/performance_stress_test, // Uncomment these if you tick the performance stress test .dm file
 	/client/proc/cleanup_stress_test_mobs,
 	/client/proc/cmd_admin_economic_panel,
+	/client/proc/cmd_admin_quest_debug_panel,
+	/client/proc/cmd_admin_ledger_report,
 	/client/proc/cmd_admin_view_chronicle,
 	/client/proc/cmd_admin_view_economics
 	)
@@ -632,6 +634,13 @@ GLOBAL_PROTECT(admin_verbs_hideable)
 	holder.unban_panel()
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Unbanning Panel") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
+/client/proc/cmd_view_letter_log()
+	set name = "View HERMES Letter Log"
+	set category = "Admin.Admin"
+	if(!check_rights(0))
+		return
+	holder.show_letter_log()
+
 /client/proc/game_panel()
 	set name = "Game Panel"
 	set category = "Admin.Admin"
@@ -722,8 +731,8 @@ GLOBAL_PROTECT(admin_verbs_hideable)
 		if("Maxcap")
 			explosion(epicenter, GLOB.MAX_EX_DEVESTATION_RANGE, GLOB.MAX_EX_HEAVY_RANGE, GLOB.MAX_EX_LIGHT_RANGE, GLOB.MAX_EX_FLASH_RANGE)
 		if("Custom Bomb")
-			var/devastation_range = input(usr, "Devastation range (in tiles):") as null|num
-			if(devastation_range == null)
+			var/extreme_impact_range = input(usr, "Extreme impact range (in tiles):") as null|num
+			if(extreme_impact_range == null)
 				return
 			var/heavy_impact_range = input(usr, "Heavy impact range (in tiles):") as null|num
 			if(heavy_impact_range == null)
@@ -734,11 +743,11 @@ GLOBAL_PROTECT(admin_verbs_hideable)
 			var/flash_range = input(usr, "Flash range (in tiles):") as null|num
 			if(flash_range == null)
 				return
-			if(devastation_range > GLOB.MAX_EX_DEVESTATION_RANGE || heavy_impact_range > GLOB.MAX_EX_HEAVY_RANGE || light_impact_range > GLOB.MAX_EX_LIGHT_RANGE || flash_range > GLOB.MAX_EX_FLASH_RANGE)
+			if(extreme_impact_range > GLOB.MAX_EX_DEVESTATION_RANGE || heavy_impact_range > GLOB.MAX_EX_HEAVY_RANGE || light_impact_range > GLOB.MAX_EX_LIGHT_RANGE || flash_range > GLOB.MAX_EX_FLASH_RANGE)
 				if(alert(usr, "Bomb is bigger than the maxcap. Continue?",,"Yes","No") != "Yes")
 					return
 			epicenter = mob.loc //We need to reupdate as they may have moved again
-			explosion(epicenter, devastation_range, heavy_impact_range, light_impact_range, flash_range, TRUE, TRUE)
+			explosion(epicenter, extreme_impact_range, heavy_impact_range, light_impact_range, flash_range, TRUE, TRUE)
 	message_admins("[ADMIN_LOOKUPFLW(usr)] creating an admin explosion at [epicenter.loc].")
 	log_admin("[key_name(usr)] created an admin explosion at [epicenter.loc].")
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Drop Bomb") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!

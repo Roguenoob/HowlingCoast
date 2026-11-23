@@ -261,19 +261,6 @@
 		/datum/npc_loadout/weapon/lich_knight,
 	)
 
-//Unique skilled NPC summons exclusive to necromancers, these guys are a menace to fight.
-/datum/npc_archetype/skeleton/summon
-	name = "Summoned Skeleton"
-	statpack = /datum/npc_statpack/line/t1
-	armor_training = ARMOR_CLASS_MEDIUM
-	traits = list(TRAIT_NOZIZORECRUIT) //Ask the necromancer for a gravemark
-	melee = SKILL_LEVEL_JOURNEYMAN //Good parrying, still will crumble to numbers. Intended so lone advs/garrison can't just solo through a necromancer's summons with ease.
-	loadouts = list(
-		/datum/npc_loadout/armor/medium/iron_chain,
-		/datum/npc_loadout/kit/skeleton_summon,
-		/datum/npc_loadout/weapon/skeleton_summon,
-	)
-
 //** STATS **//
 
 
@@ -327,8 +314,10 @@
 	)
 	shoes = list(
 		/obj/item/clothing/shoes/roguetown/simpleshoes = 60,
-		NPC_NOTHING = 40,
+		/obj/item/clothing/shoes/roguetown/boots/leather/reinforced/shoddy = 40,
 	)
+	mask = /obj/item/clothing/mask/rogue/facemask/aalloy
+	gloves = /obj/item/clothing/gloves/roguetown/fingerless_leather
 	head = list(
 		/obj/item/clothing/head/roguetown/cap = 1,
 		/obj/item/clothing/head/roguetown/roguehood = 1,
@@ -457,6 +446,9 @@
 		/obj/item/clothing/cloak/tabard/stabard/bog = 1,
 		NPC_NOTHING = 1,
 	)
+	mask = /obj/item/clothing/mask/rogue/facemask/aalloy
+	gloves = /obj/item/clothing/gloves/roguetown/fingerless_leather
+	shoes = /obj/item/clothing/shoes/roguetown/boots/leather/reinforced/shoddy
 
 /datum/npc_loadout/kit/bog_skeleton_archer
 	clear_slots = list("head", "mask", "neck")
@@ -472,17 +464,6 @@
 	armor = /obj/item/clothing/suit/roguetown/armor/plate/scale
 	shoes = /obj/item/clothing/shoes/roguetown/boots/armor
 	belt = /obj/item/storage/belt/rogue/leather
-
-/datum/npc_loadout/kit/skeleton_summon
-	shirt = list(
-		/obj/item/clothing/suit/roguetown/shirt/undershirt/vagrant = 50,
-		/obj/item/clothing/suit/roguetown/shirt/undershirt/vagrant/l = 50,
-	)
-	cloak = list( //Random Cloaks, akin to regular-ish necro skeletons.
-		/obj/item/clothing/cloak/tabard/stabard/surcoat/necro,
-		/obj/item/clothing/cloak/tabard/necro,
-		/obj/item/clothing/cloak/half/lich,
-	)
 
 /datum/npc_loadout/kit/fallen_duke
 	belt = /obj/item/storage/belt/rogue/leather/black
@@ -586,12 +567,4 @@
 	weapons = list(
 		list(/obj/item/rogueweapon/eaglebeak/lucerne),
 		list(/obj/item/rogueweapon/greatsword/zwei),
-	)
-
-/datum/npc_loadout/weapon/skeleton_summon
-	weapons = list( //Random Weaponry choices - Slightly larger pool than bog guards.
-		list(/obj/item/rogueweapon/sword/iron),
-		list(/obj/item/rogueweapon/spear),
-		list(/obj/item/rogueweapon/mace),
-		list(/obj/item/rogueweapon/stoneaxe/woodcut),
 	)

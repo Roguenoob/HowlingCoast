@@ -12,6 +12,7 @@ GLOBAL_LIST_EMPTY(lord_titles)
 	spawn_positions = 1
 	selection_color = JCOLOR_NOBLE
 	//forbidden_races = list(RACES_CONSTRUCT RACES_DESPISED RACES_OOZE) //OV Edit - Allow all for good or ill
+	allowed_patrons = NON_PSYDON_PATRONS
 	allowed_sexes = list(MALE, FEMALE)
 	advclass_cat_rolls = list(CTAG_LORD = 20)
 
@@ -31,11 +32,12 @@ GLOBAL_LIST_EMPTY(lord_titles)
 	min_pq = 30 //OV EDIT
 	max_pq = null
 	round_contrib_points = 4
+	quest_claim_barred = TRUE
 	give_bank_account = 250
 	cmode_music = 'sound/music/combat_noble.ogg'
 
 	// Can't use the Throat when you can't talk properly or.. at all for that matter.
-	vice_restrictions = list(/datum/charflaw/mute, /datum/charflaw/unintelligible)
+	vice_restrictions = list(/datum/charflaw/mute, /datum/charflaw/unintelligible, /datum/charflaw/wanted)
 
 	job_subclasses = list(
 		/datum/advclass/lord/warrior,
@@ -158,27 +160,6 @@ GLOBAL_LIST_EMPTY(lord_titles)
 			mask = /obj/item/clothing/mask/rogue/lordmask/l
 	ADD_TRAIT(H, TRAIT_NOBLE, TRAIT_GENERIC)
 
-/datum/outfit/job/roguetown/lord/choose_loadout(mob/living/carbon/human/H)
-	. = ..()
-	//OV Edit Start: End discrimination against non-fantasy-Europeans
-	/*
-	var/client/player = H?.client
-	if(player.prefs)
-		if(!istype(player.prefs.virtue_origin, /datum/virtue/origin/azuria) && !istype(player.prefs.virtue_origin, /datum/virtue/origin/grenzelhoft) && !istype(player.prefs.virtue_origin, /datum/virtue/origin/otava) && !istype(player.prefs.virtue_origin, /datum/virtue/origin/etrusca))
-			var/list/new_origins = list("Azuria" = /datum/virtue/origin/azuria,
-			"Grenzelhoft" = /datum/virtue/origin/grenzelhoft,
-			"Otava" = /datum/virtue/origin/otava,
-			"Etrusca" = /datum/virtue/origin/etrusca)
-			var/new_origin
-			var/choice = input(player, "Your origins are not compatible with the [SSticker.realm_type_short]. Where do you hail from?", "ANCESTRY") as anything in new_origins
-			if(choice)
-				new_origin = new_origins[choice]
-			else
-				to_chat(player, span_notice("No choice detected. Picking a random compatible origin."))
-				new_origin = pick(/datum/virtue/origin/grenzelhoft, /datum/virtue/origin/otava, /datum/virtue/origin/etrusca)
-			change_origin(H, new_origin, "Royal line")
-	*/
-	//OV Edit End
 //	SSticker.rulermob = H
 /**
 	Warrior Lord subclass. An evolution from the Daring Twit. This is the original Lord Class.
@@ -318,7 +299,7 @@ GLOBAL_LIST_EMPTY(lord_titles)
 		STATKEY_PER = 2,
 		STATKEY_WIL = 1,
 	)
-	subclass_mage_aspects = list("mastery" = FALSE, "major" = 1, "minor" = 1, "utilities" = 4, "ward" = TRUE)
+	subclass_mage_aspects = list("mastery" = FALSE, "major" = 1, "minor" = 1, "utilities" = 5, "ward" = TRUE)
 	subclass_skills = list(
 		/datum/skill/combat/staves = SKILL_LEVEL_JOURNEYMAN,
 		/datum/skill/combat/arcyne = SKILL_LEVEL_EXPERT,
@@ -348,10 +329,11 @@ GLOBAL_LIST_EMPTY(lord_titles)
 	backpack_contents = list(
 		/obj/item/storage/keyring/lord = 1,
 		/obj/item/storage/belt/rogue/pouch/coins/veryrich = 1,
-		/obj/item/rogueweapon/huntingknife/idagger/steel/decorated = 1,
+		/obj/item/rogueweapon/huntingknife/idagger/steel/silver/arcyne = 1,
+		/obj/item/rogueweapon/scabbard/sheath/royal = 1,
 		/obj/item/blueprint/mace_mushroom = 1,
 		/obj/item/hunting_map/white_stag = 1,
-		/obj/item/rogueweapon/scabbard/sheath/royal = 1
+		/obj/item/rogueweapon/spellbook/greater = 1
 	)
 
 /**

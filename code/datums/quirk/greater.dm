@@ -3,20 +3,33 @@
  * You need to give up your statpack AND take a second vice to get access so they get to be _slightly_ stronger.
 */
 
+/datum/quirk/amorphous_landing
+	name = "Amorphous Landing"
+	desc = "My body yields to impact, spreading into a puddle before slowly reforming."
+	mechdesc = "After landing, you flatten into ooze and are knocked down. Prevents fall damage, but stuns you. The 'Acrobatic' virtue halves this stun time."
+	added_traits = list(TRAIT_AMORPHOUS_LANDING, TRAIT_NOFALLDAMAGE2)
+	allowed_species = list(/datum/species/ooze)
+	greater = TRUE
+	ui_fa_icon = "droplet"
+
+/datum/quirk/amorphous_landing/apply_to_human(mob/living/carbon/human/recipient)
+	. = ..()
+	recipient.AddComponent(/datum/component/amorphous_landing)
+
 /datum/quirk/noble
 	name = "Unlanded Noble"
 	desc = "By birth or deeds, I've a high place in Astrata's order. My holdings, however, are too small or too far away to grant much benefit beyond a title."
 	mechdesc = "Grants the noble trait, but no other benefits. You will also need to behave more strictly 'noble' than those in noble roles; for example, sleeping outdoors or on a poor-quality bed, using scavenged or poorly forged equipment, and similar will debuff your mood."
 	added_traits = list(TRAIT_NOBLE, TRAIT_NOBLE_UNLANDED)
 	greater = TRUE
-	restricted_species = list(/datum/species/construct/metal, /datum/species/dullahan, /datum/species/ooze)
+	//restricted_species = list(/datum/species/construct/metal, /datum/species/dullahan, /datum/species/ooze) //OV Edit - Commented out for Character Creation
 	ui_fa_icon = "crown"
 
 /datum/quirk/wyldeater // not quite as good as inhumen digestion but maybe slightly less likely to get you flagged as a graggarite?
 	name = "Wyld Metabolism"
 	desc = "Dendor's touch lies heavier upon me than most. I can eat things most would fail to stomach."
 	added_traits = list(TRAIT_WILD_EATER)
-	allowed_species = list(/datum/species/anthromorph, /datum/species/anthromorphsmall, /datum/species/lupian, /datum/species/tabaxi, /datum/species/akula, /datum/species/vulpkanin)
+	allowed_species = list(/datum/species/anthromorph, /datum/species/anthromorphsmall, /datum/species/lupian, /datum/species/tabaxi, /datum/species/akula, /datum/species/vulpkanin, /datum/species/elf/wood)
 	greater = TRUE
 	ui_fa_icon = "drumstick-bite"
 
