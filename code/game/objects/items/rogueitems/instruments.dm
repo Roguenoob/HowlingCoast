@@ -27,6 +27,7 @@
 	var/playing = FALSE
 	grid_height = 64
 	grid_width = 32
+	obj_flags = UNIQUE_RENAME
 // OV Add Start
 	/// Instrument is in some other holder such as an organ or item.
 	var/not_held = FALSE
@@ -122,18 +123,18 @@
 			if(!choice || !user)
 				return
 
-			if(playing || !(src in user.held_items) && !(not_held) || user.get_inactive_held_item()) // OV Edit
+			if(playing || !(src in user.held_items) && !(not_held)) // OV Edit
 				return
 
 			if(choice == "Upload New Song")
 				if(lastfilechange && world.time < lastfilechange + 3 MINUTES)
-					say("NOT YET!")
+					to_chat(user, span_warning("It is not ready yet, wait [max(0, ceil((lastfilechange + 3 MINUTES - world.time) / 10))] seconds."))
+					user.playsound_local(user, 'sound/misc/beep.ogg', 100, FALSE)
 					return
-				playsound(loc, 'sound/misc/beep.ogg', 100, FALSE, -1)
 				var/newfile = music_upload(user, src)
 				if(!newfile)
 					return
-				if(playing || !(src in user.held_items) && !(not_held) || user.get_inactive_held_item()) // OV Edit
+				if(playing || !(src in user.held_items) && !(not_held)) //OV EDIT
 					return
 
 				lastfilechange = world.time
@@ -151,11 +152,6 @@
 
 			curfile = song_list[choice]
 			if(!user || playing || !(src in user.held_items) && !(not_held) ) // OV Edit
-				return
-			if(user.get_inactive_held_item())
-				playing = FALSE
-				soundloop.stop(user) // OV Edit
-				user.remove_status_effect(/datum/status_effect/buff/playing_music)
 				return
 			if(curfile)
 				playing = TRUE
@@ -334,7 +330,7 @@
 
 /obj/item/rogue/instrument/shamisen
 	name = "shamisen"
-	desc = "The shamisen, or simply «three strings», is an kazengunese stringed instrument with a washer, which is usually played with the help of a bachi."
+	desc = "The shamisen, or simply «three strings», is an Kazengunese stringed instrument with a washer, which is usually played with the help of a bachi."
 	icon_state = "shamisen"
 	lefthand_file = 'icons/mob/inhands/items_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/items_righthand.dmi'

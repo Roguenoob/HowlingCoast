@@ -123,6 +123,7 @@ GLOBAL_LIST_EMPTY(chosen_names)
 	var/nickname = "Please Change Me"
 	var/highlight_color = "#FF0000"
 	var/list/charflaws = list()
+	var/list/charflaw_choices = list()
 
 	var/static/default_cmusic_type = /datum/combat_music/default
 	var/datum/combat_music/combat_music
@@ -136,6 +137,7 @@ GLOBAL_LIST_EMPTY(chosen_names)
 	var/list/customizer_entries = list()
 	var/list/list/body_markings = list()
 	var/update_mutant_colors = TRUE // if TRUE, resets accessory and marking colors when mutant colors change
+	var/ooze_color_shifting = TRUE
 
 	///direct link to a headshot image on a whitelisted site. it would rather these 3 fields be a list, but that's actually less efficient at runtime
 	var/headshot_link
@@ -171,6 +173,8 @@ GLOBAL_LIST_EMPTY(chosen_names)
 	var/flavortext
 	var/flavortext_cached
 
+	var/pen_name
+
 	var/ooc_notes
 	var/ooc_notes_cached
 
@@ -185,6 +189,8 @@ GLOBAL_LIST_EMPTY(chosen_names)
 
 	var/noble_gossip
 	var/noble_gossip_cached
+
+	var/list/secrets = list()
 
 	var/list/img_gallery = list()
 	var/list/nsfw_img_gallery = list()
@@ -209,7 +215,6 @@ GLOBAL_LIST_EMPTY(chosen_names)
 	var/preset_bounty_severity_b_key
 	var/preset_bounty_severity_v_key
 	var/preset_bounty_crime
-
 
 	var/averse_chosen_faction = "Inquisition"
 	var/cursed_animal = "mouse" //OV ADD

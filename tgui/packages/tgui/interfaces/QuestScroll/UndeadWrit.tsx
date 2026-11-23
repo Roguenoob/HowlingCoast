@@ -8,6 +8,7 @@ export const UndeadWrit = (props: {
   rulerTitle: string;
   groupWord?: string | null;
   namePlural?: string | null;
+  ringleader?: string | null;
   reward: number;
   levyRate: number;
   levyExempt: boolean;
@@ -25,6 +26,7 @@ export const UndeadWrit = (props: {
     rulerTitle,
     groupWord,
     namePlural,
+    ringleader,
     reward,
     levyRate,
     levyExempt,
@@ -39,6 +41,12 @@ export const UndeadWrit = (props: {
   } = props;
   const folk = namePlural || 'unquiet dead';
   const host = groupWord || 'host';
+  const leader = ringleader ? (
+    <>
+      {' '}
+      and led by one called <b>{ringleader}</b>
+    </>
+  ) : null;
 
   return (
     <>
@@ -47,7 +55,8 @@ export const UndeadWrit = (props: {
       </p>
       <p style={writParagraph}>
         The dead walk again upon {realm}: a {host} of {folk}, risen from their
-        graves.
+        graves
+        {leader}.
       </p>
       <p style={writParagraph}>
         <i>
@@ -57,8 +66,7 @@ export const UndeadWrit = (props: {
       </p>
       <p style={writParagraph}>
         Put them down by steel or fire. This writ shall mark itself when they
-        are destroyed. Return it then to the Contract Ledger, that the sum
-        of{' '}
+        are destroyed. Return it then to the Contract Ledger, that the sum of{' '}
         <RewardClause
           reward={reward}
           levyRate={levyRate}
